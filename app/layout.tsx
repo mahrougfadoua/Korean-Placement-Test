@@ -1,0 +1,88 @@
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
+import Image from "next/image";
+import { Inter, Plus_Jakarta_Sans, Noto_Sans_KR } from "next/font/google";
+import "./globals.css";
+import { ACADEMY } from "@/lib/config";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta" });
+const notoKr = Noto_Sans_KR({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-noto-kr",
+});
+
+export const metadata: Metadata = {
+  title: `${ACADEMY.tagline} | ${ACADEMY.name}`,
+  description: "Find out your Korean level (CEFR) in a few minutes.",
+};
+
+function KoreanFlag() {
+  const bars = (
+    <>
+      <rect x="-2.5" y="-1.8" width="5" height="0.9" fill="#000" />
+      <rect x="-2.5" y="-0.45" width="5" height="0.9" fill="#000" />
+      <rect x="-2.5" y="0.9" width="5" height="0.9" fill="#000" />
+    </>
+  );
+  return (
+    <svg
+      viewBox="0 0 36 24"
+      className="h-4 w-6 flex-none rounded-[3px] shadow-sm ring-1 ring-black/10"
+      aria-hidden="true"
+    >
+      <rect width="36" height="24" fill="#fff" />
+      <g transform="translate(18 12)">
+        <circle r="6" fill="#CD2E3A" />
+        <path d="M-6 0A6 6 0 0 0 6 0A3 3 0 0 0 0 0A3 3 0 0 1 -6 0Z" fill="#0047A0" />
+      </g>
+      <g transform="translate(6 4.5) rotate(-34)">{bars}</g>
+      <g transform="translate(30 4.5) rotate(34)">{bars}</g>
+      <g transform="translate(6 19.5) rotate(34)">{bars}</g>
+      <g transform="translate(30 19.5) rotate(-34)">{bars}</g>
+    </svg>
+  );
+}
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="en">
+      <body
+        className={`${inter.variable} ${jakarta.variable} ${notoKr.variable} flex min-h-screen flex-col bg-white font-sans`}
+      >
+        <header className="sticky top-0 z-20 border-b border-slate-100 bg-white/90 backdrop-blur">
+          {/* Korean-flag accent stripe */}
+          <div className="flex h-1 w-full" aria-hidden="true">
+            <span className="flex-1 bg-[#0047A0]" />
+            <span className="flex-1 bg-white" />
+            <span className="flex-1 bg-[#CD2E3A]" />
+          </div>
+
+          <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-2">
+            <Image
+              src="/logo.png"
+              alt={ACADEMY.name}
+              width={240}
+              height={192}
+              priority
+              className="h-14 w-auto sm:h-16"
+            />
+            <span className="flex items-center gap-2 rounded-full bg-aqua-soft py-1.5 pe-3.5 ps-2.5 text-[11px] font-bold uppercase tracking-[0.18em] text-navy sm:text-xs">
+              <KoreanFlag />
+              Korean Placement Test
+            </span>
+          </div>
+        </header>
+
+        <main className="mx-auto w-full max-w-4xl flex-1 px-5 py-10 sm:py-14">
+          {children}
+        </main>
+
+        <footer className="py-6 text-center text-sm text-slate-400">
+          © {ACADEMY.name}
+        </footer>
+      </body>
+    </html>
+  );
+}
